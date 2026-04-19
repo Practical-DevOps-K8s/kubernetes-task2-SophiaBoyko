@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: webapp:latest
-          imagePullPolicy: IfNotPresent
+          image: sophiaboyko/webapp:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
