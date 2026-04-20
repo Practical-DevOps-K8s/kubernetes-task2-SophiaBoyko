@@ -6,7 +6,6 @@ RUN apt-get update -qq && apt-get install -y \
   nodejs \
   postgresql-client \
   libpq-dev \
-  libsqlite3-dev \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -18,4 +17,5 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+ENTRYPOINT ["./bin/docker-entrypoint"]
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]

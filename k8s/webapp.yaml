@@ -11,19 +11,6 @@ spec:
       labels:
         app: webapp
     spec:
-      initContainers:
-        - name: migrate
-          image: sophiaboyko/webapp:latest
-          imagePullPolicy: Always
-          command: ["bundle", "exec", "rails", "db:create", "db:migrate"]
-          env:
-            - name: RAILS_ENV
-              value: production
-            - name: SECRET_KEY_BASE
-              value: "a_very_long_secret_key_base_for_rails_production_use"
-          volumeMounts:
-            - name: sqlite-storage
-              mountPath: /app/storage
       containers:
         - name: webapp
           image: sophiaboyko/webapp:latest
@@ -37,12 +24,8 @@ spec:
               value: "true"
             - name: SECRET_KEY_BASE
               value: "a_very_long_secret_key_base_for_rails_production_use"
-          volumeMounts:
-            - name: sqlite-storage
-              mountPath: /app/storage
-      volumes:
-        - name: sqlite-storage
-          emptyDir: {}
+            - name: DATABASE_URL
+              value: "postgresql://postgres:supersecretpassword@postgres:5432/app_production"
 ---
 apiVersion: v1
 kind: Service
