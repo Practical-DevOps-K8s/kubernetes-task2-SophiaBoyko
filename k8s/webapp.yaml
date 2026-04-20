@@ -11,6 +11,18 @@ spec:
       labels:
         app: webapp
     spec:
+      initContainers:
+        - name: migrate
+          image: sophiaboyko/webapp:latest
+          imagePullPolicy: Always
+          command: ["bundle", "exec", "rails", "db:create", "db:migrate"]
+          env:
+            - name: RAILS_ENV
+              value: production
+            - name: SECRET_KEY_BASE
+              value: "a_very_long_secret_key_base_for_rails_production_use"
+            - name: DATABASE_URL
+              value: "postgresql://postgres:supersecretpassword@postgres:5432/app_production"
       containers:
         - name: webapp
           image: sophiaboyko/webapp:latest
@@ -26,13 +38,6 @@ spec:
               value: "a_very_long_secret_key_base_for_rails_production_use"
             - name: DATABASE_URL
               value: "postgresql://postgres:supersecretpassword@postgres:5432/app_production"
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 10
 ---
 apiVersion: v1
 kind: Service
