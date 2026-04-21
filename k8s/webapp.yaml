@@ -26,6 +26,13 @@ spec:
               value: "a_very_long_secret_key_base_for_rails_production_use"
             - name: DATABASE_URL
               value: "postgresql://postgres:supersecretpassword@postgres:5432/app_production"
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            failureThreshold: 10
 ---
 apiVersion: v1
 kind: Service
